@@ -1,1 +1,60 @@
+pipeline {
+
+  agent any
+
+   tools {
+     maven 'Maven'
+     jdk 'JDK25'
+   }
+
+    stages {
+
+     stage("Checkout") {
+
+       steps {
+
+         git branch "main",
+
+           url: 'https://github.com/Naveene4jan/ven.git",
+
+           credentialsid: 'github-token"
+       }
+     }
+
+   stage('Build') {
+
+    steps {
+
+     sh 'mvn clean compile'
+
+}
+   }
+      stage('Test') {
+            steps {
+                bat 'mvn test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                bat 'mvn package'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline execution failed!'
+        }
+
+        always {
+            echo 'Pipeline execution completed.'
+        }
+    }
+}
+
 
