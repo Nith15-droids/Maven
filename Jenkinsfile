@@ -17,7 +17,7 @@ pipeline {
 
            url: 'https://github.com/Nith15-droids/Maven.git',
 
-           credentialsid: 'github-token'
+           credentialsId: 'github-token'
        }
      }
 
