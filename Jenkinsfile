@@ -1,35 +1,28 @@
 pipeline {
+    agent any
 
-  agent any
-
-   tools {
-     maven 'Maven'
-     jdk 'JDK25'
-   }
+    tools {
+        maven 'Maven'
+        jdk 'JDK25'
+    }
 
     stages {
 
-     stage("Checkout") {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/Nith15-droids/Maven.git',
+                    credentialsId: 'github-token'
+            }
+        }
 
-       steps {
+        stage('Build') {
+            steps {
+                bat 'mvn clean compile'
+            }
+        }
 
-         git branch: 'main',
-
-           url: 'https://github.com/Nith15-droids/Maven.git',
-
-           credentialsId: 'github-token'
-       }
-     }
-
-   stage('Build') {
-
-    steps {
-
-     sh 'mvn clean compile'
-
-}
-   }
-      stage('Test') {
+        stage('Test') {
             steps {
                 bat 'mvn test'
             }
@@ -56,5 +49,3 @@ pipeline {
         }
     }
 }
-
-
