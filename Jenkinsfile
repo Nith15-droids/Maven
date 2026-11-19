@@ -8,44 +8,44 @@ pipeline {
 
     stages {
 
+        // Stage 1: Checkout source code
         stage('Checkout') {
             steps {
                 git branch: 'main',
                     url: 'https://github.com/Nith15-droids/Maven.git',
                     credentialsId: 'github-token'
+
+                echo 'Source code downloaded successfully'
             }
         }
 
+        // Stage 2: Build the application
         stage('Build') {
             steps {
                 bat 'mvn clean compile'
             }
         }
 
+        // Stage 3: Execute test cases
         stage('Test') {
             steps {
                 bat 'mvn test'
             }
         }
 
+        // Stage 4: Package the application
         stage('Package') {
             steps {
                 bat 'mvn package'
             }
         }
-    }
 
-    post {
-        success {
-            echo 'Pipeline executed successfully!'
-        }
-
-        failure {
-            echo 'Pipeline execution failed!'
-        }
-
-        always {
-            echo 'Pipeline execution completed.'
+        // Stage 5: Run the application
+        stage('Run Application') {
+            steps {
+                bat 'mvn exec:java -Dexec.mainClass="com.example.app.App"'
+            }
         }
     }
+
 }
